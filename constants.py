@@ -1,4 +1,4 @@
-LR = 0.05
+LR = 0.005
 
 # l: lambda defines how to balance Stopo and Satt
 l = 0.5
@@ -12,10 +12,10 @@ eta = 0.5
 # defines how to balance topo info and att info in MRF layer
 beta = 0.5
 
-DATASET_NAME = "cora"
+DATASET_NAME = "cora2"
 
-DROPOUT = 0.5
+DROPOUT = 0.3
 
-epochs = 100
+epochs = 50
 
-CONV1_OUT_SIZE = 1024
+CONV1_OUT_SIZE = 256

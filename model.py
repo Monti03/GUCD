@@ -11,7 +11,7 @@ class MyModel(tf.keras.Model):
         self.conv_2 = GraphConvolution(adj_norm=adj_n, output_size=K, dropout_rate=DROPOUT, act=tf.nn.softmax)
         self.mrf = MRFLayer(Y, K, act=tf.nn.softmax)
         self.top_dec = TopologyDecoder(D, K, act=tf.math.sigmoid)
-        self.att_dec = AttributesDecoder(m, K)
+        self.att_dec = AttributesDecoder(m, K, act=lambda x:x)
 
     def call(self, inputs):
         # get the result of the first convolution
@@ -21,11 +21,11 @@ class MyModel(tf.keras.Model):
         # get the embedding by using the MRF layer
         self.z = self.mrf(self.x2)
         # decode the embedding and obtain topology and attributes
-        top = self.top_dec(self.z)
         att = self.att_dec(self.z)
+        top = self.top_dec(self.z)
 
         # return topology and attributes decoded
-        return [tf.reshape(top, [-1]), tf.reshape(att, [-1])]
+        return [tf.reshape(top, [-1]), att]
 
     def getZ(self):
         return self.z

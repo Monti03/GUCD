@@ -80,7 +80,7 @@ def train(features, adj_train, adj_train_norm, train_edges, train_false_edges, c
             y_actual = [train_edges_p_l+train_edges_n_l, features.toarray().flatten()] 
             """
             # define the ground truth
-            y_actual = [adj_train.toarray().flatten(), features.toarray().flatten()]
+            y_actual = [adj_train.toarray().flatten(), features.toarray()]
 
             # get the embedding of the nodes
             Z = model.getZ()
@@ -102,12 +102,12 @@ def train(features, adj_train, adj_train_norm, train_edges, train_false_edges, c
 
         # measure accuracy on the train edges
         top_acc_function = tf.keras.metrics.BinaryAccuracy()
-        top_acc_function.update_state(y_actual[0], tf.nn.sigmoid(pred[0]))
+        top_acc_function.update_state(y_actual[0], pred[0])
         top_train_accuracy = top_acc_function.result().numpy()
 
         # measure the accuracy on the attributes
         att_acc_function = tf.keras.metrics.BinaryAccuracy()
-        att_acc_function.update_state(y_actual[1], pred[1])
+        att_acc_function.update_state(y_actual[1].flatten(), tf.reshape(pred[1], [-1]))
         att_train_accuracy = att_acc_function.result().numpy()
         
         print("train top acc: {}".format(top_train_accuracy))

@@ -10,6 +10,25 @@ def load_data(dataset_name):
         return load_cora_data()
     elif (dataset_name == "citeseer"):
         return load_citeseer_data()
+    elif(dataset_name == "cora2"):
+        return load_cora2_data()
+
+def load_cora2_data():
+    adj_complete = np.loadtxt(open("CORA/W.csv", "rb"), delimiter=",")
+    adj_sparse = sp.csr_matrix(adj_complete)
+
+    features = np.loadtxt(open("CORA/fea.csv", "rb"), delimiter=",")
+    features_sparse = sp.csr_matrix(features)
+
+    gnd = np.loadtxt(open("CORA/gnd.csv", "rb"), delimiter=",")
+
+    labels = []
+    clusters = set()
+    for i, cluster in enumerate(gnd):
+        labels.append([i, cluster])
+        clusters.add(cluster)
+
+    return adj_sparse, features_sparse, labels, len(clusters)
 
 def load_citeseer_data():
     content_d = {}

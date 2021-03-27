@@ -124,10 +124,11 @@ class AttributesDecoder(tf.keras.layers.Layer):
 
     # K number of clusters
     # m is the number of features
-    def __init__(self, m, K, act=tf.nn.softmax):
+    def __init__(self, m, K, act=tf.nn.sigmoid):
         super(AttributesDecoder, self).__init__()
         self.m = m
         self.K = K
+        self.act = act
     
     def build(self, input_shape):
         init = tf.keras.initializers.GlorotNormal(seed=None)
@@ -135,5 +136,5 @@ class AttributesDecoder(tf.keras.layers.Layer):
     
     # returns (Z*AttributesDecoder_weights)
     def call(self, inputs):
-        return tf.matmul(inputs, self.AttributesDecoder_weights)
-        
+        x = tf.matmul(inputs, self.AttributesDecoder_weights)
+        return self.act(x)
