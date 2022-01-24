@@ -1,5 +1,3 @@
-from importlib.resources import path
-import os
 
 LR = 0.005
 

@@ -1,5 +1,3 @@
-from calendar import EPOCH
-from tkinter import E
 import tensorflow as tf
 
 from constants import LR, l, gamma, eta, beta, DATASET_NAME, epochs
@@ -31,13 +29,13 @@ for current_argument, current_value in arguments:
         DATASET_NAME = current_value
     elif current_argument in ("--lr"):
         LR = float(current_value)
-    elif current_argument in ("l", "--lambda"):
+    elif current_argument in ("-l", "--lambda"):
         l = float(current_value)
-    elif current_argument in ("g","--gamma"):
+    elif current_argument in ("-g","--gamma"):
         gamma = float(current_value)
-    elif current_argument in ("e","--eta"):
+    elif current_argument in ("-e","--eta"):
         eta = float(current_value)
-    elif current_argument in ("b","--beta"):
+    elif current_argument in ("-b","--beta"):
         beta = float(current_value)
     elif current_argument in ("--epochs"):
         epochs = int(current_value)
