@@ -1,3 +1,6 @@
+from importlib.resources import path
+import os
+
 LR = 0.005
 
 # l: lambda defines how to balance Stopo and Satt
@@ -12,10 +15,12 @@ eta = 0.5
 # defines how to balance topo info and att info in MRF layer
 beta = 0.5
 
-DATASET_NAME = "cora2"
+DATASET_NAME = "cora"
 
-DROPOUT = 0.3
+DROPOUT = 0.15
 
 epochs = 50
 
 CONV1_OUT_SIZE = 256
+
+DATA_FOLDER = "dataset"

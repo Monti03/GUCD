@@ -16,23 +16,23 @@ import tensorflow as tf
 
 from constants import *
 
-
 def load_data(dataset_name):
-    if(dataset_name == "cora"):
-        return load_cora_data()
-    elif (dataset_name == "citeseer"):
+    if (dataset_name == "citeseer"):
         return load_citeseer_data()
-    elif(dataset_name == "cora2"):
-        return load_cora2_data()
+    elif(dataset_name == "cora"):
+        return load_cora_data()
+    else:
+        raise Exception("no such Dataset")
 
-def load_cora2_data():
-    adj_complete = np.loadtxt(open("CORA/W.csv", "rb"), delimiter=",")
+def load_cora_data():
+    dataset_folder = os.sep.join([DATA_FOLDER, "cora"])
+    adj_complete = np.loadtxt(open(os.sep.join([dataset_folder, "W.csv"]), "rb"), delimiter=",")
     adj_sparse = sp.csr_matrix(adj_complete)
 
-    features = np.loadtxt(open("CORA/fea.csv", "rb"), delimiter=",")
+    features = np.loadtxt(open(os.sep.join([dataset_folder, "fea.csv"]), "rb"), delimiter=",")
     features_sparse = sp.csr_matrix(features)
 
-    gnd = np.loadtxt(open("CORA/gnd.csv", "rb"), delimiter=",")
+    gnd = np.loadtxt(open(os.sep.join([dataset_folder, "gnd.csv"]), "rb"), delimiter=",")
 
     labels = []
     clusters = set()
@@ -43,8 +43,9 @@ def load_cora2_data():
     return adj_sparse, features_sparse, labels, len(clusters)
 
 def load_citeseer_data():
+    dataset_folder = os.sep.join([DATA_FOLDER, "citeseer"])
     content_d = {}
-    with open("citeseer/citeseer.content", "r") as fin_c:
+    with open(os.sep.join([dataset_folder, "citeseer.content"]), "r") as fin_c:
         classes = set()
         docs = set()
         for line in fin_c:
@@ -62,7 +63,7 @@ def load_citeseer_data():
         content_d[doc]["id"] = i
     
     cites = []
-    with open("citeseer/citeseer.cites", "r") as fin_c:
+    with open(os.sep.join([dataset_folder, "citeseer.cites"]), "r") as fin_c:
         for line in fin_c:
             splitted = line.strip().split("\t")
             if(len(splitted)>1 and splitted[0] in content_d and splitted[1] in content_d):
@@ -91,15 +92,6 @@ def load_citeseer_data():
 
     return adj_complete, features, labels, len(class_to_id.keys())
 
-def load_cora_data():
-    # get cursor from db 
-    conn = sqlite3.connect('CORA/cora.db')
-    cur = conn.cursor()
-
-    # load data from db
-    adj_sparse, features_sparse, labels, n_clusters = load_cora_adj_features(cur)
-    
-    return adj_sparse, features_sparse, labels, n_clusters
 
 def load_cora_adj_features(cur):
     

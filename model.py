@@ -1,6 +1,6 @@
 import tensorflow as tf
 from layers import *
-from constants import *
+from constants import CONV1_OUT_SIZE, DROPOUT
 
 class MyModel(tf.keras.Model):
 
